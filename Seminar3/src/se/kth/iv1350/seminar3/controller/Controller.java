@@ -1,6 +1,7 @@
 package se.kth.iv1350.seminar3.controller;
 
 import se.kth.iv1350.seminar3.modell.Payment;
+import se.kth.iv1350.seminar3.modell.Receipt;
 import se.kth.iv1350.seminar3.modell.Sale;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
@@ -21,7 +22,7 @@ public class Controller {
     private DiscountRegister discount;
     private InventorySystem invSys;
     private Printer printer;
-
+    private Payment payment;
     private Sale sale;
     private SaleLog saleLog;
 
@@ -31,7 +32,6 @@ public class Controller {
 
     private double currentTotalPrice;
 
-    pribat dfmcäasnmkzs
 
     /**
      * Initializes a new instance of Controller.
@@ -71,17 +71,23 @@ public class Controller {
      * Ends the current sale process.
      * @return The calculated total price including tax.
      */
-    public void endSale() {
-        return scanItem(null); 
+    public double endSale() {
+        currentTotalPrice = sale.getCurrentTotalPrice();
+
+        return currentTotalPrice;
     }
 
     /**
      * Processes payment for the current sale.
-     *
      * @param amountPaid the amount paid by the customer
      */
-    public void pay(double amountPaid) {
-        currentTotalPrice = sale.getCurrentTotalPrice();
-        Payment payment = new Payment(currentTotalPrice, amountPaid);
+    public void pay(double amountPaid, String paymentMethod) {
+        
+        payment = new Payment( amountPaid, currentTotalPrice, paymentMethod);
+        reciept= new Receipt(saleDTO, payment);
+        print= new Printer(reciept);
+        saleLog= new SaleLog(SaleDTO);
+        //sendSaleinfo(saleLog);
+        
     }    
 }

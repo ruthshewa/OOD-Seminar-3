@@ -36,7 +36,6 @@ public class Sale {
     public double getCurrentTotalPrice(){
 
        
-
         return currentTotalPrice;
     }
 

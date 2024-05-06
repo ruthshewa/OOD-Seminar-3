@@ -9,6 +9,7 @@ import se.kth.iv1350.seminar3.dto.SaleDTO;
 public class Payment {
     private double currentTotalPrice;
     private double amountPaid;
+    private String paymentMethod;
 
     /**
      * Constructs a Payment instance.
@@ -16,9 +17,11 @@ public class Payment {
      * @param currentTotalPrice the total price of the current sale
      * @param amountPaid the amount paid by the customer
      */
-    public Payment(double currentTotalPrice, double amountPaid) {
-        this.currentTotalPrice = currentTotalPrice;
+    public Payment(double amountPaid,double currentTotalPrice, String paymentMethod) {
         this.amountPaid = amountPaid;
+        this.currentTotalPrice = currentTotalPrice;
+        this.paymentMethod = paymentMethod;
+
     }
 
     /**
@@ -29,7 +32,7 @@ public class Payment {
      * @param currentTotalPrice the total price of the sale
      * @return the calculated change to be given to the customer
      */
-    private double calculateCustomerChange(double amountPaid, double currentTotalPrice) {
+    private double calculateCustomerChange() {
         return amountPaid - currentTotalPrice;
     }
 
@@ -40,6 +43,14 @@ public class Payment {
      * @return the change that should be given back to the customer
      */
     public double getCustomerChange() {
-        return calculateCustomerChange(amountPaid, currentTotalPrice);
+        return calculateCustomerChange();
     }    
+
+    /**
+     * Returns the payment method used by the customer.
+     *      * @return the payment method used by the customer
+     */
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
 }
