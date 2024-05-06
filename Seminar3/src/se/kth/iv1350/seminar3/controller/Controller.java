@@ -29,7 +29,7 @@ public class Controller {
     private SaleDTO saleDTO;
     private ItemDTO itemDTO;
 
-    private double currentTotalPrice;
+  
 
     /**
      * Initializes a new instance of Controller.
