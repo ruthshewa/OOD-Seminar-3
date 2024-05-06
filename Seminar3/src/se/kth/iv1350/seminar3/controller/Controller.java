@@ -31,6 +31,8 @@ public class Controller {
 
     private double currentTotalPrice;
 
+    pribat dfmcäasnmkzs
+
     /**
      * Initializes a new instance of Controller.
      * It sets up all system components required to process sales.
