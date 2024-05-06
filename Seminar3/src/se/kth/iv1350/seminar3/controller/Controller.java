@@ -90,4 +90,12 @@ public class Controller {
         //sendSaleinfo(saleLog);
         
     }    
+
+
+
+     public void requestDiscount(int customerId) {
+        DiscountDTO discount = discountRegister.fetchDiscountFromRegister(customerId, currentSale.getCurrentTotalPrice(), currentSale.getSaleDTOItemList());
+        double totalPrice = currentSale.applyDiscount(discount);
+        System.out.println("Total price after discount: " + totalPrice);
+    }
 }

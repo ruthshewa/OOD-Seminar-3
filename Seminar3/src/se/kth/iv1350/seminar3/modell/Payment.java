@@ -32,7 +32,7 @@ public class Payment {
      * @param currentTotalPrice the total price of the sale
      * @return the calculated change to be given to the customer
      */
-    private double calculateCustomerChange() {
+    private double calculateCustomerChange( double amountPaid, double currentTotalPrice ) {
         return amountPaid - currentTotalPrice;
     }
 
@@ -43,7 +43,7 @@ public class Payment {
      * @return the change that should be given back to the customer
      */
     public double getCustomerChange() {
-        return calculateCustomerChange();
+        return calculateCustomerChange(this.amountPaid, this.currentTotalPrice);
     }    
 
     /**
@@ -52,5 +52,9 @@ public class Payment {
      */
     public String getPaymentMethod() {
         return paymentMethod;
+    }
+
+    public double getAmountPaid(){
+        return this.amountPaid;
     }
 }

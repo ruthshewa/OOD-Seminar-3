@@ -1,5 +1,6 @@
 package se.kth.iv1350.seminar3.modell;
 
+import java.util.Random;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
 import java.util.ArrayList;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
@@ -10,13 +11,28 @@ public class Sale {
     private double currentTotalPrice;
     private SaleDTO saleDTO;
     public boolean itemFound = false;
+    private int saleID;
     
 
 
     public Sale(){
 
+        this.saleID = generateRandomSaleID();  // Call to generate a random sale ID
         purchased = new ArrayList<>();
         currentTotalPrice = 0;
+    }
+
+    /**
+     * Generates a random Sale ID.
+     * @return a random integer to be used as a Sale ID
+     */
+    private int generateRandomSaleID() {
+        Random random = new Random();
+        return random.nextInt(Integer.MAX_VALUE);  // Ensure a non-negative integer
+    }
+
+    public int getSaleID() {
+        return saleID;
     }
 
     public boolean findItemInfo(ItemDTO itemDTO){// CHANGED THIS FROM ITEMID TO ITEMDTO SINCE THE ARRAYLIST CONTAINS DTO
@@ -32,6 +48,7 @@ public class Sale {
         return itemFound;
 
     }
+    //Inclusive Vat
 
     public double getCurrentTotalPrice(){
 
@@ -74,6 +91,12 @@ public class Sale {
         purchased.add(itemDTO);
 
 
+    }
+
+    public double applyDiscount(DiscountDTO discount)
+    {
+        currentTotalPrice= currentTotalPrice*discount;
+        return currentTotalPrice;
     }
     
 }

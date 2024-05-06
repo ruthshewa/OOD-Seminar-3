@@ -1,6 +1,7 @@
 package se.kth.iv1350.seminar3.integration;
 
 import se.kth.iv1350.seminar3.dto.ItemDTO;
+import se.kth.iv1350.seminar3.dto.SaleDTO;
 
 public class InventorySystem {
     
@@ -28,5 +29,9 @@ public class InventorySystem {
 
 
 
+    }
+
+    public void sendSaleInfoToInv(SaleDTO saleDTO){
+        
     }
 }
