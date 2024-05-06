@@ -33,4 +33,10 @@ public class View {
         return quantity;
     }
 
+
+    public void simulateUserInteraction() {
+        int customerId = 101;  // Simulated customer ID
+        controller.requestDiscount(customerId);
+    }
+
 }

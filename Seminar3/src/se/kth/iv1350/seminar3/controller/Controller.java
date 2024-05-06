@@ -10,7 +10,6 @@ import se.kth.iv1350.seminar3.integration.InventorySystem;
 import se.kth.iv1350.seminar3.integration.AccountingSystem;
 import se.kth.iv1350.seminar3.integration.Printer;
 import se.kth.iv1350.seminar3.integration.DiscountRegister;
-import se.kth.iv1350.seminar3.modell.SaleLog;
 
 /**
  * The Controller class acts as the mediator between the view and the model.
@@ -24,7 +23,6 @@ public class Controller {
     private Printer printer;
     private Payment payment;
     private Sale sale;
-    private SaleLog saleLog;
 
     // Data transfer objects
     private SaleDTO saleDTO;
@@ -43,7 +41,6 @@ public class Controller {
         discount = new DiscountRegister();
         invSys = new InventorySystem();
         printer = new Printer();
-        saleLog = new SaleLog();
     }
 
     /**
@@ -86,7 +83,6 @@ public class Controller {
         payment = new Payment( amountPaid, currentTotalPrice, paymentMethod);
         reciept= new Receipt(saleDTO, payment);
         print= new Printer(reciept);
-        saleLog= new SaleLog(SaleDTO);
         //sendSaleinfo(saleLog);
         
     }    
