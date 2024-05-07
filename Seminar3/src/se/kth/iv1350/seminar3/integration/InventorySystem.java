@@ -4,6 +4,8 @@ import se.kth.iv1350.seminar3.dto.ItemDTO;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
 
 public class InventorySystem {
+
+    private 
     
 
 
@@ -31,7 +33,7 @@ public class InventorySystem {
 
     }
 
-    public void sendSaleInfoToInv(SaleDTO saleDTO){
+    public void sendSaleInfo(SaleDTO saleDTO){
         
     }
 }

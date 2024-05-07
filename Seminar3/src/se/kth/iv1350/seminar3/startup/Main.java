@@ -25,6 +25,9 @@ import se.kth.iv1350.seminar3.dto.ItemDTO;
         Controller contr = new Controller ();
         View view =new View(contr);
         ItemDTO itemDTO = new ItemDTO();
+       
+
+       
 
     }
 }

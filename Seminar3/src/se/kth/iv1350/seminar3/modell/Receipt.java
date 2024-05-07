@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
+import se.kth.iv1350.seminar3.dto.DiscountDTO;
 
 
 public class Receipt {
@@ -52,7 +53,7 @@ public class Receipt {
         builder.append("Time of Sale: ").append(receiptTime.format(dtf)).append("\n");
         builder.append("Items Purchased:\n").append(printPurchasedItems(df)).append("\n");
         builder.append("Total cost (incl VAT): ").append(df.format(saleDTO.getTheCurrentTotalPrice())).append("\n");
-        builder.append("Discount: ").append(df.format(saleDTO.getDiscount())).append("\n");
+        builder.append("Discount: ").append(df.format(discountDTO.getDiscountAmount())).append("\n");
         builder.append("Amount to Pay: ").append(df.format(amountPaid)).append("\n");
         builder.append("Payment Method: ").append(payment.paymentMethod).append("\n");
         builder.append("Amount Changed: ").append(df.format(amountPaid - saleDTO.getTotalCostWithVAT())).append("\n");

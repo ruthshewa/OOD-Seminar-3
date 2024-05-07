@@ -1,25 +1,33 @@
 package se.kth.iv1350.seminar3.integration;
 
-import java.util.HashMap;
+import se.kth.iv1350.seminar3.dto.SaleDTO;
+import se.kth.iv1350.seminar3.dto.DiscountDTO;
 
 public class DiscountRegister {
 
-    private HashMap<Integer, DiscountDTO> discountMap;
+    private int customerID;
+    private SaleDTO saleDTO;
+    private double currentTotalPrice;
+
+
 
     public DiscountRegister() {
-        this.discountMap = new HashMap<>();
-        initializeDiscounts();
+      
     }
 
-    private void initializeDiscounts() {
-        // Example: Customer ID 101 gets a $20 off and 15% discount
-        discountMap.put(101, new DiscountDTO(20, 15));
-        // Additional discounts can be added here
-    }
+//demo list 
+// 29393993 20%
 
-    public DiscountDTO fetchDiscountFromRegister(int customerId) {
-        // Returns the discount for a given customer ID, or a default discount if no specific one exists
-        return discountMap.getOrDefault(customerId, new DiscountDTO(0, 0));
+
+//demo list
+// tomata 0.9kr/kg
+
+//demo 
+//500 kr 10kr for discount list
+
+    public DiscountDTO fetchDiscountFromRegister(int customerId, SaleDTO saleDTO, double currentTotalPrice) {
+        // Returns the discount Amount for a given customer ID, or a default discount if no specific one exists
+        return null;
     }
     
 }
