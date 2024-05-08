@@ -69,25 +69,15 @@ public class Controller {
      */
     public SaleDTO scanItem(int itemID, int quantity) {
 
-        if (sale.findItemInfo(itemID)) {
-            SaleDTO saleDTO = sale.increaseQuantity(itemID, quantity);
-            return saleDTO;
-        }
-        else{
-            
-            ItemDTO itemDTO= invSys.fetchIteminfo(itemID);
-           
-            if (itemDTO != null) {
-                // Add the new item to the sale.
-                sale.addItemFoundInInventorysytem(itemDTO);
-                SaleDTO saleDTO = new SaleDTO (sale);
-                return saleDTO;
-            } else {
-                // Optionally handle the case where the item is not found in the inventory.
-                System.out.println("Item not found with ID: " + itemID);
-                return null; 
-            }
-           
+        // Get the details from inventorysystem and return itemDTO
+        // the whole logic will be in the sale object not here
+        // the controller should not have any logic 
+        // methods should be private 
+
+        ItemDTO itemDTO= invSys.fetchIteminfo(itemID);
+        SaleDTO saleDTO =  sale.addItem(itemDTO, quantity);
+        return saleDTO;
+        
         }
         
     }

@@ -19,22 +19,14 @@ public class View {
         this.contr = contr;
     }
 
-    public void execution(){
+    public void runFakeexecution(){
         contr.startSale();
     }
-
+//demo item and fake scan
    
 
-    public void setQuantity(int quantity){
-        this.quantity = quantity;
-    }
 
-    public int getQuantity(){
-        return quantity;
-    }
-
-    
-
+//Is not needed
     public void simulateUserInteraction() {
         int customerId = 101;  // Simulated customer ID
         contr.requestDiscount(customerId);

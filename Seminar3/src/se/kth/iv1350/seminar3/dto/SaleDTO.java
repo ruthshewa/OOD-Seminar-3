@@ -9,6 +9,8 @@ public class SaleDTO {
     private ArrayList<ItemDTO>snapshotOfPurscasedItems;
     private int saleDTOID;  // Sale ID to identify the sale
 
+    // don't referenc directly the sale instead copy the values from the sale to the saleDTO
+
     public SaleDTO(Sale sale){
 
         this.snapshotOfTheCurrentTotalPrice = sale.getCurrentTotalPrice();
@@ -33,7 +35,7 @@ public class SaleDTO {
         return saleDTOID;
     }
 
-    public 
+ 
 
 
     

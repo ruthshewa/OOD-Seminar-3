@@ -41,19 +41,9 @@ public class Sale {
         return purchased;
     }
 
-    public boolean findItemInfo(int itemID){// CHANGED THIS FROM ITEMID TO ITEMDTO SINCE THE ARRAYLIST CONTAINS DTO
 
-        
 
-        if (getTheListOfPurschasedItems(purchased).contains(itemID)){ // prev
-            itemFound =true;
-            previouslyScannedItem(itemDTO);
-
-        }
-
-        return itemFound;
-
-    }
+    // add a meth
     //Inclusive Vat
 
     public double getCurrentTotalPrice(){
@@ -70,7 +60,8 @@ public class Sale {
 
     }
 
-    public ArrayList <ItemDTO > getCurrentPurchasedListOfItems(){
+    //not needed
+    private ArrayList <ItemDTO > getCurrentPurchasedListOfItems(){
         return purchased;
     }
 
@@ -92,36 +83,28 @@ public class Sale {
      * @param itemDTO
      */
 
-    public void addItemFoundInInventorysytem(ItemDTO itemDTO){
+    public void addItem(ItemDTO itemDTO, int quantity){
 
         purchased.add(itemDTO);
 
+        // write the logic of if item is found or not here
+
 
     }
-/**
- * Applies a discount to the current total price based on the provided DiscountDTO.
- * This method adjusts the current total price by either subtracting a fixed discount amount
- * or by applying a percentage discount rate. 
- * @param discount The DiscountDTO object containing the discount details.
- * @return The adjusted total price after applying the discount.
- */
-    public double applyDiscount(DiscountDTO discount) {
-        // Check if there is a fixed discount amount greater than zero to apply
-        if (discount.getDiscountAmount() > 0) {
-            // Subtract the discount amount from the current total price
-            currentTotalPrice -= discount.getDiscountAmount();
+
+    private boolean findItemInfo(int itemID){// CHANGED THIS FROM ITEMID TO ITEMDTO SINCE THE ARRAYLIST CONTAINS DTO
+
+        
+
+        if (getTheListOfPurschasedItems(purchased).contains(itemID)){ // prev
+            itemFound =true;
+            previouslyScannedItem(itemDTO);
+
         }
 
-        // Check if there is a discount rate to apply
-        if (discount.getDiscountRate() > 0) {
-            // Calculate the discount based on the rate and subtract it from the current total price
-            currentTotalPrice -= currentTotalPrice * (discount.getDiscountRate() / 100.0);
-        }
+        return itemFound;
 
-        // Return the new total price after applying the discount
-        return currentTotalPrice;
     }
-
 
     
     
