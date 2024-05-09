@@ -69,17 +69,9 @@ public class Controller {
      */
     public SaleDTO scanItem(int itemID, int quantity) {
 
-        // Get the details from inventorysystem and return itemDTO
-        // the whole logic will be in the sale object not here
-        // the controller should not have any logic 
-        // methods should be private 
-
         ItemDTO itemDTO= invSys.fetchIteminfo(itemID);
         SaleDTO saleDTO =  sale.addItem(itemDTO, quantity);
         return saleDTO;
-        
-        }
-        
     }
 
     /**
@@ -125,9 +117,7 @@ public class Controller {
 
     public void requestDiscount(int customerID) {
         DiscountDTO discountDTO = discountReg.fetchDiscountFromRegister(customerID, saleDTO, currentTotalPrice);
-        totalPriceAfterDiscount = sale.applyDiscount(discountDTO);
-        System.out.println("Total price after discount: " + totalPriceAfterDiscount);
-       
+        totalPriceAfterDiscount = sale.applyDiscount(discountDTO);       
     }
 
      /**

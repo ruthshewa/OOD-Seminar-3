@@ -7,106 +7,132 @@ import se.kth.iv1350.seminar3.dto.SaleDTO;
 import se.kth.iv1350.seminar3.integration.InventorySystem;
 import se.kth.iv1350.seminar3.dto.DiscountDTO;
 
+
 public class Sale {
-    private ArrayList<ItemDTO> purchased;
+    public ArrayList<ItemDTO> purchased;
     private double currentTotalPrice;
-    private SaleDTO saleDTO;
-    public boolean itemFound = false;
     private int saleID;
-    
 
-
-    public Sale(){
-
-        this.saleID = generateRandomSaleID();  // Call to generate a random sale ID
-        purchased = new ArrayList<ItemDTO>();
-        currentTotalPrice = 0;
+    /**
+     * Constructs a Sale with a unique ID and initializes it.
+     */
+    public Sale() {
+        this.saleID = generateRandomSaleID();
+        this.purchased = new ArrayList<>();
+        this.currentTotalPrice = 0; // Whenever a new sales is started, the total price is set to 0.
     }
 
     /**
-     * Generates a random Sale ID.
-     * @return a random integer to be used as a Sale ID
+     * Generates a random, non-negative Sale ID.
+     * @return Randomly generated integer.
      */
     private int generateRandomSaleID() {
         Random random = new Random();
-        return random.nextInt(Integer.MAX_VALUE);  // Ensure a non-negative integer
+        return random.nextInt(Integer.MAX_VALUE);
     }
 
+    /**
+     * @return unique Sale ID.
+     */
     public int getSaleID() {
         return saleID;
     }
 
-    public ArrayList getList(){
-
+    /**
+     * Retrieves the list of items purchased.
+     * @return List of items.
+     */
+    public ArrayList<ItemDTO> getPurchasedItems() {
         return purchased;
     }
 
+    
 
-
-    // add a meth
-    //Inclusive Vat
-
-    public double getCurrentTotalPrice(){
-
-       
+    public double getCurrentTotalPrice() {
         return currentTotalPrice;
     }
 
-    public double calculationOfCurrentTotalPrice(ItemDTO itemDTO){
-
-        currentTotalPrice = (itemDTO.getItemPrice() * (1 + (itemDTO.getItemVAT())/100));
-
-        return currentTotalPrice;
-
+    /**
+     * Adds or updates an item in the sale based on the item ID.
+     * @param itemDTO The item to add or update.
+     * @param quantity The quantity of the item.
+     */
+    public void addItem(ItemDTO itemDTO, int quantity) {
+        if (updateItemQuantityIfExists(itemDTO, quantity)) {
+            updateTotalPrice();
+            return;
+        }
+        addItemToPurchaseList(itemDTO,quantity);
+        updateTotalPrice();
     }
 
-    //not needed
-    private ArrayList <ItemDTO > getCurrentPurchasedListOfItems(){
-        return purchased;
+    /**
+     * Increases the quantity of an existing item if it exists in the purchased list.
+     * @param itemDTO The item DTO.
+     * @param quantity The quantity to add.
+     * @return true if the item exists and was updated, false otherwise.
+     */
+    private boolean updateItemQuantityIfExists(ItemDTO itemDTO, int quantity) {
+        for (ItemDTO item : purchased) {
+            if (item.getItemID() == itemDTO.getItemID()) {
+                item.increaseQuantity(quantity);
+                return true;
+            }
+        }
+        return false;
     }
 
+    /** * Adds a specified quantity of a new item to the purchased list.
+        * This method is used when a customer purchases multiple units of the same item.
+     * @param itemDTO The item DTO to add.
+     * @param quantity The quantity of the new item.
+     */
+    private void addItemToPurchaseList(ItemDTO itemDTO,int quantity) {
+        itemDTO.setQuantity(quantity);
+        purchased.add(itemDTO);
+    }
 
-    public void previouslyScannedItem(ItemDTO itemDTO){
-        if(itemFound){
-
-            itemDTO.increasedQuantityOfItem();
-
-        }else{
-            InventorySystem.fetchItem(itemDTO.getItemID());
-            
+    /**
+     * Recalculates the total price of the sale based on the items and their quantities.
+     */
+    private void updateTotalPrice() {
+       // currentTotalPrice = 0; //not needed yet 
+        for (ItemDTO item : purchased) {
+            currentTotalPrice += item.getItemPrice();
         }
     }
 
     /**
      * 
-     * The sale is updated when a new item is added to the list.
-     * @param itemDTO
+ 
+ 
+     * Applies a discount to the current total price using the provided DiscountDTO.
+     * @param discount The discount details.
+     * @return The total price after discount.
      */
-
-    public void addItem(ItemDTO itemDTO, int quantity){
-
-        purchased.add(itemDTO);
-
-        // write the logic of if item is found or not here
-
-
+    public double applyDiscount(DiscountDTO discount) {
+        applyFixedDiscount(discount);
+        applyPercentageDiscount(discount);
+        return currentTotalPrice;
     }
 
-    private boolean findItemInfo(int itemID){// CHANGED THIS FROM ITEMID TO ITEMDTO SINCE THE ARRAYLIST CONTAINS DTO
-
-        
-
-        if (getTheListOfPurschasedItems(purchased).contains(itemID)){ // prev
-            itemFound =true;
-            previouslyScannedItem(itemDTO);
-
+    /**
+     * When passed a list of all bought items, a fixed amount of discount is subtracted from the total price.
+     * @param discount The discount containing the fixed amount to subtract.
+     */
+    private void applyFixedDiscount(DiscountDTO discount) {
+        if (discount.getDiscountAmount() > 0) {
+            currentTotalPrice -= discount.getDiscountAmount();
         }
-
-        return itemFound;
-
     }
 
-    
-    
+    /**
+     * When passed the total cost or the customer id, a percentage is be reduced from the total cost of the entire sale. 
+     * @param discount The discount containing the percentage rate to apply.
+     */
+    private void applyPercentageDiscount(DiscountDTO discount) {
+        if (discount.getDiscountRate() > 0) {
+            currentTotalPrice -= currentTotalPrice * (discount.getDiscountRate() / 100.0);
+        }
+    }
 }
-
