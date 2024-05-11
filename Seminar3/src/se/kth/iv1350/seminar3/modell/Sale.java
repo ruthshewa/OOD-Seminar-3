@@ -9,7 +9,7 @@ import se.kth.iv1350.seminar3.dto.DiscountDTO;
 
 
 public class Sale {
-    public ArrayList<ItemDTO> purchased;
+    private ArrayList<ItemDTO> purchased;
     private double currentTotalPrice;
     private int saleID;
 
@@ -66,7 +66,7 @@ public class Sale {
         updateTotalPrice();
     }
 
-    /**
+     /**
      * Increases the quantity of an existing item if it exists in the purchased list.
      * @param itemDTO The item DTO.
      * @param quantity The quantity to add.
@@ -82,8 +82,9 @@ public class Sale {
         return false;
     }
 
-    /** * Adds a specified quantity of a new item to the purchased list.
-        * This method is used when a customer purchases multiple units of the same item.
+    /**
+     * Adds a specified quantity of a new item to the purchased list.
+     * This method is used when a customer purchases multiple units of the same item.
      * @param itemDTO The item DTO to add.
      * @param quantity The quantity of the new item.
      */
@@ -96,16 +97,12 @@ public class Sale {
      * Recalculates the total price of the sale based on the items and their quantities.
      */
     private void updateTotalPrice() {
-       // currentTotalPrice = 0; //not needed yet 
+        currentTotalPrice = 0;
         for (ItemDTO item : purchased) {
-            currentTotalPrice += item.getItemPrice();
+            currentTotalPrice += item.getItemPrice() * item.getQuantity();
         }
     }
-
-    /**
-     * 
- 
- 
+/**
      * Applies a discount to the current total price using the provided DiscountDTO.
      * @param discount The discount details.
      * @return The total price after discount.

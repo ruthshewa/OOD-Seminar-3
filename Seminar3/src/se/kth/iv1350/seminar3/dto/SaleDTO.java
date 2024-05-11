@@ -4,53 +4,54 @@ import java.util.ArrayList;
 import se.kth.iv1350.seminar3.modell.Sale;
 
 public class SaleDTO {
+    private final double snapshotOfTheCurrentTotalPrice;
+    private final ArrayList<ItemDTO> snapshotOfPurchasedItems;
+    private final int saleDTOID;
 
-    public Sale sale;
-    private double snapshotOfTheCurrentTotalPrice;// The saledto should also include an itemdescription besider the price and the running total
-    private ArrayList<ItemDTO> snapshotOfPurscasedItems;
-    private int saleDTOID;  // Sale ID to identify the sale
-
-
-    // don't referenc directly the sale instead copy the values from the sale to the saleDTO
-
-
-    public ArrayList<ItemDTO> copyItems(ArrayList<ItemDTO> purchased) {
-
-        snapshotOfPurscasedItems = new ArrayList<>(purchased.size());
-
-        for (ItemDTO item : purchased) {
-            snapshotOfPurscasedItems.add(item); // Add each item to the new list
-        }
-
-        return snapshotOfPurscasedItems;
-    }
-
-
-    public SaleDTO(Sale sale){
-
+    /**
+     * Constructs a SaleDTO by copying values from the Sale object.
+     * @param sale The Sale object to copy data from.
+     */
+    public SaleDTO(Sale sale) {
         this.snapshotOfTheCurrentTotalPrice = sale.getCurrentTotalPrice();
-        this.saleDTOID = sale.getSaleID(); // Store the Sale ID
- 
+        this.snapshotOfPurchasedItems = copyItems(sale.getPurchasedItems());
+        this.saleDTOID = sale.getSaleID();
     }
 
-    public double getTheCurrentTotalPrice(){
+    /**
+     * Copies the list of purchased items.
+     * @param purchased The original list of purchased items.
+     * @return A copy of the list of purchased items.
+     */
+    private ArrayList<ItemDTO> copyItems(ArrayList<ItemDTO> purchased) {
+        ArrayList<ItemDTO> itemsCopy = new ArrayList<>(purchased.size());
+        for (ItemDTO item : purchased) {
+            itemsCopy.add(item); // Use the copy constructor to create a deep copy
+        }
+        return itemsCopy;
+    }
+
+    /**
+     * Gets the snapshot of the current total price.
+     * @return The total price at the time of DTO creation.
+     */
+    public double getTheCurrentTotalPrice() {
         return snapshotOfTheCurrentTotalPrice;
     }
 
-    public ArrayList<ItemDTO> getTheListOfPurschasedItems(){
-        return snapshotOfPurscasedItems;
+    /**
+     * Gets the snapshot of purchased items.
+     * @return A list of purchased items at the time of DTO creation.
+     */
+    public ArrayList<ItemDTO> getTheListOfPurchasedItems() {
+        return snapshotOfPurchasedItems;
     }
 
-   /**
+    /**
      * Returns the sale ID.
-     * @return the sale ID
+     * @return The sale ID.
      */
     public int getSaleDTOID() {
         return saleDTOID;
     }
-
- 
-
-
-    
 }

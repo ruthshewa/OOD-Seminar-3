@@ -10,19 +10,17 @@ import se.kth.iv1350.seminar3.dto.SaleDTO;
 import se.kth.iv1350.seminar3.modell.Sale;
 
 public class InventorySystem {
-
-    private String itemName;
-    private int itemID;
-    private double itemPrice;
-    private double itemVAT;
-
     
     private List<ItemDTO> items = new ArrayList<>();
 
     public InventorySystem(){
+        this.items = new ArrayList<>();
         addItemsToStore();
     }
 
+    /**
+     * Adds predefined items to the inventory.
+     */
     private void addItemsToStore() {
         items.add(new ItemDTO("Orange Juice", 1, 2.5, 0.25, 50));
         items.add(new ItemDTO("Orange", 2, 0.5, 0.25, 100));
@@ -39,19 +37,21 @@ public class InventorySystem {
     }
     
 
-
-    public ItemDTO findItemInInventory(int itemID){
-
+  /**
+     * Fetches item information based on the item ID.
+     * 
+     * @param itemID The ID of the item to fetch.
+     * @return The ItemDTO if found, otherwise null.
+     */
+    public ItemDTO fetchIteminfo(int itemID){
         for(ItemDTO item : items){
-
             if(item.getItemID() == itemID){
-                saleDTO.addItemToPurchaseList(item,1);
-                return item;
+                return item; // Return a copy to prevent external modification
             }
         }
         return null;
-
     }
+
 
     /**
      * Sends sale information to the inventory system for processing.
@@ -69,14 +69,13 @@ public class InventorySystem {
      */
     private void updateInventoryBasedOnSale(SaleDTO saleDTO) {
         Map<Integer, Integer> itemCounts = new HashMap<>();
-        for (ItemDTO item : saleDTO.getTheListOfPurschasedItems()) {
+        for (ItemDTO item : saleDTO.getTheListOfPurchasedItems()) {
             int itemID = item.getItemID();
             itemCounts.put(itemID, itemCounts.getOrDefault(itemID, 0) + item.getQuantity());
         }
         decreaseInventoryQuantities(itemCounts);
     }
-
-    /**
+ /**
      * Decreases the inventory quantities for each item based on the sale.
      * 
      * @param itemCounts A map containing item IDs and their respective quantities to be decremented.
@@ -95,11 +94,26 @@ public class InventorySystem {
     }
 
     /**
+     * Finds an item in the inventory based on the item ID.
+     * 
+     * @param itemID The ID of the item to find.
+     * @return The ItemDTO if found, otherwise null.
+     */
+    private ItemDTO findItemInInventory(int itemID) {
+        for (ItemDTO item : items) {
+            if (item.getItemID() == itemID) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Retrieves the list of items in the inventory.
      * 
      * @return A list of ItemDTO objects representing the inventory.
      */
     public List<ItemDTO> getItemList() {
-        return items;
+        return new ArrayList<>(items);
     }
 }  

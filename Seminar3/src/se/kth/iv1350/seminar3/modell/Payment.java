@@ -51,7 +51,7 @@ public class Payment {
      *      * @return the payment method used by the customer
      */
     public String getPaymentMethod() {
-        return paymentMethod;
+        return this.paymentMethod;
     }
 
     public double getAmountPaid(){

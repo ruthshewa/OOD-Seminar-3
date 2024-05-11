@@ -65,13 +65,13 @@ public class Controller {
      *
      * @param itemDTO the item to add
      * @param quantity the quantity of the item
-     * @return updated sale information as a SaleDTO
+     * @return updated sale information for the view
      */
-    public SaleDTO scanItem(int itemID, int quantity) {
+    public ItemDTO scanItem(int itemID, int quantity) {// can we not return ItemDTO to the view 
 
-        ItemDTO itemDTO= invSys.fetchIteminfo(itemID);
-        SaleDTO saleDTO =  sale.addItem(itemDTO, quantity);
-        return saleDTO;
+        itemDTO= invSys.fetchIteminfo(itemID);
+        sale.addItem(itemDTO, quantity);
+        return itemDTO;
     }
 
     /**
