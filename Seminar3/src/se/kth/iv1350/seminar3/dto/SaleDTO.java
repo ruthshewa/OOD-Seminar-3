@@ -26,31 +26,26 @@ public class SaleDTO {
     private ArrayList<ItemDTO> copyItems(ArrayList<ItemDTO> purchased) {
         ArrayList<ItemDTO> itemsCopy = new ArrayList<>(purchased.size());
         for (ItemDTO item : purchased) {
-            itemsCopy.add(item); // Use the copy constructor to create a deep copy
+            ItemDTO itemCopy = new ItemDTO(
+                item.getItemName(),
+                item.getItemID(),
+                item.getItemPrice(),
+                item.getItemVAT(),
+                item.getQuantity()
+            );
+            itemsCopy.add(itemCopy);
         }
         return itemsCopy;
     }
 
-    /**
-     * Gets the snapshot of the current total price.
-     * @return The total price at the time of DTO creation.
-     */
     public double getTheCurrentTotalPrice() {
         return snapshotOfTheCurrentTotalPrice;
     }
 
-    /**
-     * Gets the snapshot of purchased items.
-     * @return A list of purchased items at the time of DTO creation.
-     */
     public ArrayList<ItemDTO> getTheListOfPurchasedItems() {
         return snapshotOfPurchasedItems;
     }
 
-    /**
-     * Returns the sale ID.
-     * @return The sale ID.
-     */
     public int getSaleDTOID() {
         return saleDTOID;
     }

@@ -22,18 +22,18 @@ public class InventorySystem {
      * Adds predefined items to the inventory.
      */
     private void addItemsToStore() {
-        items.add(new ItemDTO("Orange Juice", 1, 2.5, 0.25, 50));
-        items.add(new ItemDTO("Orange", 2, 0.5, 0.25, 100));
-        items.add(new ItemDTO("Apple", 3, 0.7, 0.12, 80));
-        items.add(new ItemDTO("Banana", 4, 0.3, 0.12, 120));
-        items.add(new ItemDTO("Grapes", 5, 3.99, 0.18, 30));
-        items.add(new ItemDTO("Milk", 6, 1.99, 0.07, 200));
-        items.add(new ItemDTO("Bread", 7, 1.5, 0.06, 150));
-        items.add(new ItemDTO("Butter", 8, 2.5, 0.12, 60));
-        items.add(new ItemDTO("Cheese", 9, 3.49, 0.12, 40));
-        items.add(new ItemDTO("Yogurt", 10, 0.99, 0.07, 90));
-        items.add(new ItemDTO("Onion", 10, 0.99, 0.07, 90));
-        items.add(new ItemDTO("Potatis", 10, 0.99, 0.07, 90));
+        items.add(new ItemDTO("Orange Juice", 1, 23.5, 0.25, 50));
+        items.add(new ItemDTO("Orange", 2, 12.5, 0.25, 100));
+        items.add(new ItemDTO("Apple", 3, 3.7, 0.12, 80));
+        items.add(new ItemDTO("Banana", 4, 4.3, 0.12, 120));
+        items.add(new ItemDTO("Grapes", 5, 4.99, 0.18, 30));
+        items.add(new ItemDTO("Milk", 6, 15.99, 0.07, 200));
+        items.add(new ItemDTO("Bread", 7, 24.5, 0.06, 150));
+        items.add(new ItemDTO("Butter", 8, 67.5, 0.12, 60));
+        items.add(new ItemDTO("Cheese", 9, 53.49, 0.12, 40));
+        items.add(new ItemDTO("Yogurt", 10, 35.99, 0.07, 90));
+        items.add(new ItemDTO("Onion", 10, 9.99, 0.07, 90));
+        items.add(new ItemDTO("Potatis", 10, 11.99, 0.07, 90));
     }
     
 

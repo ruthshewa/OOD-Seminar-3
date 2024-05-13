@@ -1,46 +1,38 @@
 package se.kth.iv1350.seminar3.modell;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
-import se.kth.iv1350.seminar3.dto.SaleDTO;
 
 public class Receipt {
-    private LocalTime receiptTime;
-    private final SaleDTO saleDTO;
-    private double amountPaid;
-    private String paymentMethod;
-    private double totalCostWithVAT;
+    private LocalDateTime timeOfReceipt;
+    private final Sale sale;
+    private double amountPaidByCustomer;
+    private double totalSaleAmount;
+    private String methodOfPayment;
 
-    /**
-     * Constructs a Receipt.
-     * 
-     * @param payment The payment details.
-     * @param saleDTO The sale data transfer object.
-     */
-    public Receipt(Payment payment, SaleDTO saleDTO) {
-        setTimeOfReceipt();
-        this.saleDTO = saleDTO;
-        this.amountPaid = payment.getAmountPaid();
-        this.paymentMethod = payment.getPaymentMethod();
-        this.totalCostWithVAT = saleDTO.getTheCurrentTotalPrice();
+   
+    public Receipt(Payment paymentTransaction, Sale sale) {
+        this.timeOfReceipt = LocalDateTime.now();
+        this.sale = sale;
+        this.amountPaidByCustomer = paymentTransaction.getAmountPaid();
+        this.totalSaleAmount = paymentTransaction.getTotalSaleAmount();
+        this.methodOfPayment = paymentTransaction.getMethodOfPayment();
     }
+    
 
-    private void setTimeOfReceipt() {
-        receiptTime = LocalTime.now();
-    }
-
-    public LocalTime getReceiptTime() {
-        return receiptTime;
+    public LocalDateTime getTimeOfReceipt() {
+        return timeOfReceipt;
     }
 
     public ArrayList<ItemDTO> getPurchasedItems() {
-        return saleDTO.getTheListOfPurchasedItems();
+        return sale.getPurchasedItems();
     }
 
-    /**
+   /**
      * Builds a receipt in the form of a String.
      * 
      * @return the receipt represented by a string.
@@ -54,13 +46,13 @@ public class Receipt {
         builder.append("Store Name: Ruth Store\n");
         builder.append("Store Address: Råcksta gårdsväg 25 t\n");
         builder.append("City: Stockholm\n");
-        builder.append("Sale ID: ").append(saleDTO.getSaleDTOID()).append("\n");
-        builder.append("Time of Sale: ").append(receiptTime.format(dtf)).append("\n");
-        builder.append("Items Purchased:\n").append(printPurchasedItems(df)).append("\n");
-        builder.append("Total cost (incl VAT): ").append(df.format(totalCostWithVAT)).append("\n");
-        builder.append("Amount Paid: ").append(df.format(amountPaid)).append("\n");
-        builder.append("Payment Method: ").append(paymentMethod).append("\n");
-        builder.append("Amount Changed: ").append(df.format(amountPaid - totalCostWithVAT)).append("\n");
+        builder.append("Sale ID: ").append(sale.getSaleID()).append("\n");
+        builder.append("Time of Sale: ").append(timeOfReceipt.format(dtf)).append("\n");
+        builder.append("Items Purchased:\n").append(formatPurchasedItems(df)).append("\n");
+        builder.append("Total cost (incl VAT): ").append(df.format(sale.getCurrentTotalPrice())).append("\n");
+        builder.append("Amount Paid: ").append(df.format(amountPaidByCustomer)).append("\n");
+        builder.append("Payment Method: ").append(methodOfPayment).append("\n");
+        builder.append("Change Given: ").append(df.format(amountPaidByCustomer - totalSaleAmount)).append("\n");
         builder.append("--------------------------------\n");
         builder.append("Tack för besök, Välkommen åter\n");
         builder.append("Öppet köp 30 dagar\n");
@@ -71,14 +63,14 @@ public class Receipt {
         return builder.toString();
     }
 
-    private String printPurchasedItems(DecimalFormat df) {
+    private String formatPurchasedItems(DecimalFormat df) {
         StringBuilder items = new StringBuilder();
         for (ItemDTO item : getPurchasedItems()) {
-            items.append(item.getItemName())  // Ensure getItemName is correct
+            items.append(item.getItemName())  
                  .append("  ")
                  .append(item.getQuantity())
                  .append(" x ")
-                 .append(df.format(item.getItemPrice()))  // Ensure getItemPrice is correct
+                 .append(df.format(item.getItemPrice()))  
                  .append("      ")
                  .append(df.format(item.getItemPrice() * item.getQuantity()))
                  .append("\n");

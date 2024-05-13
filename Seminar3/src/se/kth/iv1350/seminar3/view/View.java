@@ -12,8 +12,7 @@ import se.kth.iv1350.seminar3.modell.Receipt;
 import se.kth.iv1350.seminar3.modell.Sale;
 import se.kth.iv1350.seminar3.startup.*;;
 /**
- * 
- * Kommentar
+ * Simulates user interactions.
  */
 
 public class View {
@@ -27,7 +26,6 @@ public class View {
         this.contr = contr;
     }
 
-    
 
  /**
      * Simulates a user adding items, requesting discounts, and making a payment.
@@ -50,8 +48,19 @@ public class View {
         contr.endSale();
         System.out.println("Sale ended. Total price: " + contr.endSale());
 
-        // Simulate making a payment
-        contr.pay(200, "Cash");
-       
+        // Simulate if customer requests discount otherwise go to pay
+        boolean customerRequestsDiscount = true; // Simulated flag for requesting a discount
+        int customerId = 1111; // Simulated customer ID
+        double discount = 0; // Simulated discount value
+
+        if (customerRequestsDiscount) {
+             discount = contr.requestDiscount(customerId);
+             System.out.println("DiscountAmount " + discount);
+
+        }
+        contr.pay(200,  discount, "Cash");
+        System.out.println("Payment completed.");
+      
     }
+
 }

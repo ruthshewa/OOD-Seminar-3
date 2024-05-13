@@ -9,6 +9,6 @@ public class Printer {
     }
      
     public void print(Receipt receipt) {
-        receipt.receiptPaperFormat();
+        System.out.println(receipt.receiptPaperFormat());
     }        
 }

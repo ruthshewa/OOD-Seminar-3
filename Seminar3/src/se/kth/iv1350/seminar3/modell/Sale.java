@@ -102,34 +102,4 @@ public class Sale {
             currentTotalPrice += item.getItemPrice() * item.getQuantity();
         }
     }
-/**
-     * Applies a discount to the current total price using the provided DiscountDTO.
-     * @param discount The discount details.
-     * @return The total price after discount.
-     */
-    public double applyDiscount(DiscountDTO discount) {
-        applyFixedDiscount(discount);
-        applyPercentageDiscount(discount);
-        return currentTotalPrice;
-    }
-
-    /**
-     * When passed a list of all bought items, a fixed amount of discount is subtracted from the total price.
-     * @param discount The discount containing the fixed amount to subtract.
-     */
-    private void applyFixedDiscount(DiscountDTO discount) {
-        if (discount.getDiscountAmount() > 0) {
-            currentTotalPrice -= discount.getDiscountAmount();
-        }
-    }
-
-    /**
-     * When passed the total cost or the customer id, a percentage is be reduced from the total cost of the entire sale. 
-     * @param discount The discount containing the percentage rate to apply.
-     */
-    private void applyPercentageDiscount(DiscountDTO discount) {
-        if (discount.getDiscountRate() > 0) {
-            currentTotalPrice -= currentTotalPrice * (discount.getDiscountRate() / 100.0);
-        }
-    }
 }

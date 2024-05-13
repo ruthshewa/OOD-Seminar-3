@@ -34,16 +34,8 @@ public class Controller {
     private ItemDTO itemDTO;
 
     private double currentTotalPrice;
-    private double totalPriceAfterDiscount;
-    private int customerID;
     private Printer printed;
-  
 
-
-    /**
-     * Initializes a new instance of Controller.
-     * It sets up all system components required to process sales.
-     */
 
     public Controller() {
         accSys = new AccountingSystem();
@@ -90,41 +82,32 @@ public class Controller {
      * @param amountPaid the amount paid by the customer
      * @param paymentMethod the method used for payment
      */
-    public void pay(double amountPaid, String paymentMethod) {
+    public void pay(double amountPaid, double discount, String paymentMethod) {
         
-        // Should this be in view
-        payment = new Payment( amountPaid, totalPriceAfterDiscount, paymentMethod);
-        receipt = new Receipt(payment,saleDTO);
+        double TotalPriceAfterDiscountApplied = sale.getCurrentTotalPrice() - discount;
+        System.out.println("blabla finalTotalPrice: " + TotalPriceAfterDiscountApplied+ " current sale price: " + sale.getCurrentTotalPrice());
+
+        payment = new Payment(amountPaid, TotalPriceAfterDiscountApplied, paymentMethod);
+
+        System.out.println("yes Payment " + payment.getCustomerChange());
+
+        receipt = new Receipt(payment, sale);
         printer.print(receipt);
-        updateExternalSystems();
-        
-    }    
+        updateExternalSystems(saleDTO);
+    } 
 
-
-    /**
- * Applies a discount to the sale based on different criteria.
- * This method handles three scenarios:
- * 1. Item-based discount calculation.
- * 2. Total cost-based percentage discount.
- * 3. Customer ID based percentage discount.
- *
- * @param saleDTO List of all purchased items in the sale.
- * @param currentTotalPrice Total cost of all items before any discount is applied.
- * @param customerId Unique identifier for the customer.
- * discountReg The discount register containing discount configurations.
- * @return The total price after applying the applicable discount.
- */
-
-    public void requestDiscount(int customerID) {
-        DiscountDTO discountDTO = discountReg.fetchDiscountFromRegister(customerID, saleDTO, currentTotalPrice);
-        totalPriceAfterDiscount = sale.applyDiscount(discountDTO);       
+    public double requestDiscount(int customerId) {
+        saleDTO = new SaleDTO(sale);
+        double totalPrice = sale.getCurrentTotalPrice();
+        return discountReg.fetchDiscountFromRegister(customerId, saleDTO, totalPrice);
     }
+
 
      /**
      * Updates external systems with the details of the current sale.
      * Sends sale information to the inventory and accounting systems for processing.
      */
-     private void updateExternalSystems() {
+    private void updateExternalSystems(SaleDTO saleDTO) {
         invSys.sendSaleInfo(saleDTO);
         accSys.sendSaleInfo(saleDTO);
     }
