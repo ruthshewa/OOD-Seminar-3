@@ -3,9 +3,6 @@ package se.kth.iv1350.seminar3.modell;
 import java.util.Random;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
 import java.util.ArrayList;
-import se.kth.iv1350.seminar3.dto.SaleDTO;
-import se.kth.iv1350.seminar3.integration.InventorySystem;
-import se.kth.iv1350.seminar3.dto.DiscountDTO;
 
 
 public class Sale {

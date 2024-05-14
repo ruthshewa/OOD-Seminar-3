@@ -7,7 +7,6 @@ import java.util.Map;
 
 import se.kth.iv1350.seminar3.dto.ItemDTO;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
-import se.kth.iv1350.seminar3.modell.Sale;
 
 public class InventorySystem {
     
@@ -19,7 +18,7 @@ public class InventorySystem {
     }
 
     /**
-     * Adds predefined items to the inventory.
+     * Initializes the store with a predefined set of items.
      */
     private void addItemsToStore() {
         items.add(new ItemDTO("Orange Juice", 1, 23.5, 0.25, 50));
@@ -53,8 +52,9 @@ public class InventorySystem {
     }
 
 
+
     /**
-     * Sends sale information to the inventory system for processing.
+     * Processes the details of a sale to update the inventory quantities.
      * 
      * @param saleDTO The sale data transfer object containing details of the sale.
      */
@@ -85,31 +85,15 @@ public class InventorySystem {
         for (Map.Entry<Integer, Integer> entry : itemCounts.entrySet()) {
             int itemID = entry.getKey();
             int quantityToDecrease = entry.getValue();
-            ItemDTO item = findItemInInventory(itemID);
+            ItemDTO item = fetchIteminfo(itemID);
             if (item != null) {
                 item.decreaseQuantity(quantityToDecrease);
                 System.out.println("Decreased inventory quantity of item with ID " + itemID + " by " + quantityToDecrease + " units.");
             }
         }
     }
-
     /**
-     * Finds an item in the inventory based on the item ID.
-     * 
-     * @param itemID The ID of the item to find.
-     * @return The ItemDTO if found, otherwise null.
-     */
-    private ItemDTO findItemInInventory(int itemID) {
-        for (ItemDTO item : items) {
-            if (item.getItemID() == itemID) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Retrieves the list of items in the inventory.
+     * Provides a safe read-only list of all inventory items.
      * 
      * @return A list of ItemDTO objects representing the inventory.
      */

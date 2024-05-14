@@ -1,12 +1,10 @@
 package se.kth.iv1350.seminar3.controller;
 
-import se.kth.iv1350.seminar3.view.View;
 import se.kth.iv1350.seminar3.modell.Payment;
 import se.kth.iv1350.seminar3.modell.Receipt;
 import se.kth.iv1350.seminar3.modell.Sale;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
-import se.kth.iv1350.seminar3.dto.DiscountDTO;
 import se.kth.iv1350.seminar3.integration.InventorySystem;
 import se.kth.iv1350.seminar3.integration.AccountingSystem;
 import se.kth.iv1350.seminar3.integration.DiscountRegister;
@@ -85,12 +83,8 @@ public class Controller {
     public void pay(double amountPaid, double discount, String paymentMethod) {
         
         double TotalPriceAfterDiscountApplied = sale.getCurrentTotalPrice() - discount;
-        System.out.println("blabla finalTotalPrice: " + TotalPriceAfterDiscountApplied+ " current sale price: " + sale.getCurrentTotalPrice());
-
+        
         payment = new Payment(amountPaid, TotalPriceAfterDiscountApplied, paymentMethod);
-
-        System.out.println("yes Payment " + payment.getCustomerChange());
-
         receipt = new Receipt(payment, sale);
         printer.print(receipt);
         updateExternalSystems(saleDTO);

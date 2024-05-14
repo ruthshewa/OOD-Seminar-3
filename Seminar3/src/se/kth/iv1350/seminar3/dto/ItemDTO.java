@@ -15,48 +15,53 @@ public class ItemDTO {
         this.quantity = quantity;
     }
 
-    // Copy constructor
-    public ItemDTO(ItemDTO item) {
-        this.itemName = item.itemName;
-        this.itemID = item.itemID;
-        this.itemPrice = item.itemPrice;
-        this.itemVAT = item.itemVAT;
-        this.quantity = item.quantity;
-    }
-
+    /** @return The unique identifier of the item. */
     public int getItemID() {
         return itemID;
     }
 
+    /** @return The name of the item. */
     public String getItemName() {
         return itemName;
     }
 
+    /** @return The price of the item. */
     public double getItemPrice() {
         return itemPrice;
     }
 
+    /** @return The VAT rate of the item.*/
     public double getItemVAT() {
         return itemVAT;
     }
 
+    /** @return The quantity of the item. */
     public int getQuantity() {
         return quantity;
     }
 
+    /**
+     * Sets the quantity of the item.
+     *
+     * @param quantity The new quantity of the item.
+     */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     /**
-     * Increases the quantity of the item by a specified amount.
+     * Increases the quantity of the item.
+     *
+     * @param amount The amount to increase the quantity by.
      */
     public void increaseQuantity(int amount) {
         this.quantity += amount;
     }
 
     /**
-     * Decreases the quantity of the item by a specified amount.
+     * Decreases the quantity of the item.
+     *
+     * @param amount The amount to decrease the quantity by.
      */
     public void decreaseQuantity(int amount) {
         this.quantity -= amount;

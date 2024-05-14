@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.Random;
 
 import se.kth.iv1350.seminar3.controller.Controller;
-import se.kth.iv1350.seminar3.dto.DiscountDTO;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
 import se.kth.iv1350.seminar3.dto.SaleDTO;
 import se.kth.iv1350.seminar3.modell.Payment;
@@ -12,7 +11,7 @@ import se.kth.iv1350.seminar3.modell.Receipt;
 import se.kth.iv1350.seminar3.modell.Sale;
 import se.kth.iv1350.seminar3.startup.*;;
 /**
- * Simulates user interactions.
+ * Simulates user/Casheir interactions.
  */
 
 public class View {
