@@ -42,6 +42,9 @@ public class View {
         ItemDTO item2 = contr.scanItem(2, 3); // Adding 3 units of item with ID 2
         System.out.println("Added item: " + item2.getItemName() + ", quantity: " + item2.getQuantity());
 
+        ItemDTO item2 = contr.scanItem(3); // Adding item with ID 2
+        System.out.println("Added item: " + item2.getItemName() + ", quantity: " + item2.getQuantity());
+
         
         // Simulate ending the sale
         contr.endSale();

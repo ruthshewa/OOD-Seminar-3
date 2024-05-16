@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Sale {
     private ArrayList<ItemDTO> purchased;
-    private double currentTotalPrice;
+    private double runningCurrentTotalPrice;
     private int saleID;
 
     /**
@@ -16,7 +16,7 @@ public class Sale {
     public Sale() {
         this.saleID = generateRandomSaleID();
         this.purchased = new ArrayList<>();
-        this.currentTotalPrice = 0; // Whenever a new sales is started, the total price is set to 0.
+        this.runningCurrentTotalPrice = 0; // Whenever a new sales is started, the total price is set to 0.
     }
 
     /**
@@ -28,75 +28,61 @@ public class Sale {
         return random.nextInt(Integer.MAX_VALUE);
     }
 
-    /**
-     * @return unique Sale ID.
+     /**
+     * Finds an item in the sale based on the item ID.
+     * Increases the quantity of the item if it is found.
+     *
+     * @param itemID The ID of the item to find.
+     * @return The found ItemDTO, or null if not found.
      */
-    public int getSaleID() {
-        return saleID;
+    public ItemDTO itemAlreadyInSale(int itemID) {
+        for (ItemDTO item : purchased) {
+            if (item.getItemID() == itemID) {
+                return item;
+            }
+        }
+        return null;
     }
 
-    /**
-     * Retrieves the list of items purchased.
-     * @return List of items.
-     */
-    public ArrayList<ItemDTO> getPurchasedItems() {
-        return purchased;
-    }
-
-    
-
-    public double getCurrentTotalPrice() {
-        return currentTotalPrice;
-    }
-
-    /**
-     * Adds or updates an item in the sale based on the item ID.
+     /**
+     * Adds a specified quantity of a new item to the purchased list.
      * @param itemDTO The item to add or update.
      * @param quantity The quantity of the item.
      */
     public void addItem(ItemDTO itemDTO, int quantity) {
-        if (updateItemQuantityIfExists(itemDTO, quantity)) {
-            updateTotalPrice();
-            return;
-        }
-        addItemToPurchaseList(itemDTO,quantity);
-        updateTotalPrice();
-    }
-
-     /**
-     * Increases the quantity of an existing item if it exists in the purchased list.
-     * @param itemDTO The item DTO.
-     * @param quantity The quantity to add.
-     * @return true if the item exists and was updated, false otherwise.
-     */
-    private boolean updateItemQuantityIfExists(ItemDTO itemDTO, int quantity) {
-        for (ItemDTO item : purchased) {
-            if (item.getItemID() == itemDTO.getItemID()) {
-                item.increaseQuantity(quantity);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Adds a specified quantity of a new item to the purchased list.
-     * This method is used when a customer purchases multiple units of the same item.
-     * @param itemDTO The item DTO to add.
-     * @param quantity The quantity of the new item.
-     */
-    private void addItemToPurchaseList(ItemDTO itemDTO,int quantity) {
-        itemDTO.setQuantity(quantity);
         purchased.add(itemDTO);
+        itemDTO.setQuantity(quantity);
+        updateTotalPrice();
     }
 
     /**
      * Recalculates the total price of the sale based on the items and their quantities.
      */
     private void updateTotalPrice() {
-        currentTotalPrice = 0;
+        runningCurrentTotalPrice = 0;
         for (ItemDTO item : purchased) {
-            currentTotalPrice += item.getItemPrice() * item.getQuantity();
+            runningCurrentTotalPrice += item.getItemPrice() * item.getQuantity();
         }
     }
+
+     /**
+     * Retrieves the list of items purchased.
+     * @return List of items.
+     */
+    public ArrayList<ItemDTO> getPurchasedItems() {
+        return purchased;
+    }
+    /**
+     * @return unique Sale ID.
+     */
+    public int getSaleID() {
+        return saleID;
+    }
+     /**
+     * @return runningCurrentTotalPrice
+     */
+
+    public double getCurrentTotalPrice() {
+        return runningCurrentTotalPrice;
+    } 
 }

@@ -23,18 +23,18 @@ public class Controller {
     private DiscountRegister discountReg;
     private InventorySystem invSys;
     private Printer printer;
-    private Payment payment;
     private Sale sale;
-    private Receipt receipt;
+    
 
     // Data transfer objects
     private SaleDTO saleDTO;
     private ItemDTO itemDTO;
 
-    private double currentTotalPrice;
-    private Printer printed;
 
 
+    /**
+     * Creates a new instance, initializing all external system handlers.
+     */
     public Controller() {
         accSys = new AccountingSystem();
         discountReg = new DiscountRegister();
@@ -50,26 +50,37 @@ public class Controller {
     }
     
      /**
-     * Adds an item to the current sale and updates the sale information.
-     * If the item is found and added successfully, it updates the SaleDTO with new sale data.
-     *
-     * @param itemDTO the item to add
-     * @param quantity the quantity of the item
-     * @return updated sale information for the view
+     * Searches for matching item in the sale
+     * If the item is not found, it fetches the itemDTO from the inventory system and adds it to the sale with the given quantity.
+     * Otherwise the item founded DTO, increases with givem quantity
+     * @param itemID The identifier of the item to add.
+     * @param quantity The quantity of the item.
+     * @return The ItemDTO of the added item.
      */
-    public ItemDTO scanItem(int itemID, int quantity) {// can we not return ItemDTO to the view 
-
-        itemDTO= invSys.fetchIteminfo(itemID);
+    public ItemDTO scanItem(int itemID, int quantity) { // the quantity becomes issue here 
+        ItemDTO itemDTO = sale.itemAlreadyInSale(itemID);
+        if (itemDTO == null) {
+            itemDTO = invSys.fetchIteminfo(itemID);
+        }
         sale.addItem(itemDTO, quantity);
         return itemDTO;
     }
 
+     /**
+     * Overloaded method to handle scanning an item with a default quantity of one.
+     *
+     * @param itemID The identifier of the item to add.
+     * @return The ItemDTO of the added item.
+     */
+    public ItemDTO scanItem(int itemID) {
+        return scanItem(itemID, 1);
+    }
     /**
      * Ends the current sale process.
      * @return The calculated total price including tax.
      */
     public double endSale() {
-        currentTotalPrice = sale.getCurrentTotalPrice();
+        double currentTotalPrice = sale.getCurrentTotalPrice();
         return currentTotalPrice;
     }
 
@@ -84,8 +95,8 @@ public class Controller {
         
         double TotalPriceAfterDiscountApplied = sale.getCurrentTotalPrice() - discount;
         
-        payment = new Payment(amountPaid, TotalPriceAfterDiscountApplied, paymentMethod);
-        receipt = new Receipt(payment, sale);
+        Payment payment = new Payment(amountPaid, TotalPriceAfterDiscountApplied, paymentMethod);
+        Receipt receipt = new Receipt(payment, sale);
         printer.print(receipt);
         updateExternalSystems(saleDTO);
     } 
@@ -95,7 +106,6 @@ public class Controller {
         double totalPrice = sale.getCurrentTotalPrice();
         return discountReg.fetchDiscountFromRegister(customerId, saleDTO, totalPrice);
     }
-
 
      /**
      * Updates external systems with the details of the current sale.
