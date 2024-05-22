@@ -36,14 +36,14 @@ public class View {
 
         // Simulate adding items to the sale
         System.out.println("Adding items to the sale...");
-        ItemDTO item1 = contr.scanItem(1, 2); // Adding 2 units of item with ID 1
+        ItemDTO item1 = contr.scanItem(1, 6); // Adding 2 units of item with ID 1
         System.out.println("Added item: " + item1.getItemName() + ", quantity: " + item1.getQuantity());
 
         ItemDTO item2 = contr.scanItem(2, 3); // Adding 3 units of item with ID 2
         System.out.println("Added item: " + item2.getItemName() + ", quantity: " + item2.getQuantity());
 
-        ItemDTO item2 = contr.scanItem(3); // Adding item with ID 2
-        System.out.println("Added item: " + item2.getItemName() + ", quantity: " + item2.getQuantity());
+        ItemDTO item3 = contr.scanItem(3); // Adding item with ID 2
+        System.out.println("Added item: " + item3.getItemName() + ", quantity: " + item3.getQuantity());
 
         
         // Simulate ending the sale

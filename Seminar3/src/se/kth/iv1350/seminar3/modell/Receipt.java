@@ -54,6 +54,7 @@ public class Receipt {
                .append("Time of Sale: ").append(timeOfReceipt.format(dtf)).append("\n")
                .append("Items Purchased:\n").append(formatPurchasedItems(df)).append("\n")
                .append("Total cost (incl VAT): ").append(df.format(sale.getCurrentTotalPrice())).append("\n")
+               .append("Total cost (after  VAT): ").append(df.format(sale.getCurrentTotalPrice())).append("\n")
                .append("Amount Paid: ").append(df.format(amountPaidByCustomer)).append("\n")
                .append("Payment Method: ").append(methodOfPayment).append("\n")
                .append("Change Given: ").append(df.format(amountPaidByCustomer - totalSaleAmount)).append("\n")
