@@ -1,3 +1,6 @@
+package se.kth.iv1350.seminar3.dto;
+
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 

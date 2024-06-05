@@ -1,60 +1,62 @@
+package se.kth.iv1350.seminar3.modell;
+
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
-class ReceiptTest {
+import se.kth.iv1350.seminar3.dto.ItemDTO;
+
+public class ReceiptTest {
+    private Sale sale;
+    private Payment payment;
     private Receipt receipt;
-    private List<ItemDTO> itemDTOs;
 
     @BeforeEach
-    void setUp() {
-        itemDTOs = new ArrayList<>();
-        itemDTOs.add(new ItemDTO(1, 10.0, 0.25, "Item 1"));
-        itemDTOs.add(new ItemDTO(2, 20.0, 0.12, "Item 2"));
-        receipt = new Receipt(1, LocalDateTime.now(), itemDTOs);
+    public void setUp() {
+        sale = new Sale();
+        payment = new Payment(100.0, 80.0, "Cash");
+        receipt = new Receipt(payment, sale);
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
+        sale = null;
+        payment = null;
         receipt = null;
-        itemDTOs = null;
     }
 
     @Test
-    void testGetTotalPrice() {
-        double expectedTotalPrice = 33.0;
-        double actualTotalPrice = receipt.getTotalPrice();
-        assertEquals(expectedTotalPrice, actualTotalPrice, 0.001, "Total price calculation is incorrect.");
+    public void testGetTimeOfReceipt() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime receiptTime = receipt.getTimeOfReceipt();
+        
+        // Check if the receipt time is within a second of the current time
+        assertTrue(currentTime.minusSeconds(1).isBefore(receiptTime) && currentTime.plusSeconds(1).isAfter(receiptTime));
     }
 
     @Test
-    void testGetTotalVAT() {
-        double expectedTotalVAT = 4.95;
-        double actualTotalVAT = receipt.getTotalVAT();
-        assertEquals(expectedTotalVAT, actualTotalVAT, 0.001, "Total VAT calculation is incorrect.");
+    public void testReceiptPaperFormat() {
+        ItemDTO item1 = new ItemDTO("Apple", 1, 3.7, 0.12, 2);
+        ItemDTO item2 = new ItemDTO("Banana", 2, 4.3, 0.12, 3);
+        sale.addItem(item1, 2);
+        sale.addItem(item2, 3);
+        
+        String receiptText = receipt.receiptPaperFormat();
+        
+        // Check if the receipt text contains specific strings representing sale details
+        assertTrue(receiptText.contains("Store Name: Ruth Store"));
+        assertTrue(receiptText.contains("Sale ID: " + sale.getSaleID()));
+        assertTrue(receiptText.contains("Time of Sale: " + receipt.getTimeOfReceipt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))));
+        assertTrue(receiptText.contains("Items Purchased:"));
+        assertTrue(receiptText.contains(item1.getItemName()));
+        assertTrue(receiptText.contains(item2.getItemName()));
+        assertTrue(receiptText.contains("Total cost (incl VAT): " + sale.getCurrentTotalPrice()));
+        assertTrue(receiptText.contains("Amount Paid: " + payment.getAmountPaid()));
+        assertTrue(receiptText.contains("Payment Method: " + payment.getMethodOfPayment()));
+        assertTrue(receiptText.contains("Change Given: " + (payment.getAmountPaid() - payment.getTotalSaleAmount())));
+        assertTrue(receiptText.contains("Tack för besök, Välkommen åter"));
     }
-
-    @Test
-    void testGetItemDTOs() {
-        List<ItemDTO> expectedItemDTOs = itemDTOs;
-        List<ItemDTO> actualItemDTOs = receipt.getItemDTOs();
-        assertEquals(expectedItemDTOs, actualItemDTOs, "Item DTOs are not correct.");
-    }
-
-    @Test
-    void testGetReceiptId() {
-        int expectedReceiptId = 1;
-        int actualReceiptId = receipt.getReceiptId();
-        assertEquals(expectedReceiptId, actualReceiptId, "Receipt ID is incorrect.");
-    }
-
-    @Test
-    void testGetDateTime() {
-        LocalDateTime expectedDateTime = receipt.getDateTime();
-        assertNotNull(expectedDateTime, "DateTime is null.");
-    }
+}

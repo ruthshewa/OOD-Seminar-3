@@ -1,53 +1,42 @@
+package se.kth.iv1350.seminar3.modell;
+
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 public class PaymentTest {
     private Payment payment;
-    
+    private double totalSaleAmount;
+    private double amountPaidByCustomer;
+    private String methodOfPayment;
+
     @BeforeEach
     public void setUp() {
-        payment = new Payment();
+        totalSaleAmount = 50.0;
+        amountPaidByCustomer = 70.0;
+        methodOfPayment = "Cash";
+        payment = new Payment(amountPaidByCustomer, totalSaleAmount, methodOfPayment);
     }
-    
-    @AfterEach
-    public void tearDown() {
-        payment = null;
-    }
-    
+
     @Test
-    public void testPayAmount() {
-        int amount = 100;
-        boolean result = payment.payAmount(amount);
-        assertTrue(result);
+    public void testGetCustomerChange() {
+        double expectedChange = amountPaidByCustomer - totalSaleAmount;
+        assertEquals(expectedChange, payment.getCustomerChange(), "Change should be calculated correctly");
     }
-    
+
     @Test
-    public void testPayAmountNegative() {
-        int amount = -50;
-        boolean result = payment.payAmount(amount);
-        assertFalse(result);
+    public void testGetMethodOfPayment() {
+        assertEquals(methodOfPayment, payment.getMethodOfPayment(), "Payment method should match");
     }
-    
+
     @Test
-    public void testPayAmountZero() {
-        int amount = 0;
-        boolean result = payment.payAmount(amount);
-        assertFalse(result);
+    public void testGetAmountPaid() {
+        assertEquals(amountPaidByCustomer, payment.getAmountPaid(), "Amount paid should match");
     }
-    
+
     @Test
-    public void testPayAmountMax() {
-        int amount = Integer.MAX_VALUE;
-        boolean result = payment.payAmount(amount);
-        assertTrue(result);
-    }
-    
-    @Test
-    public void testPayAmountMin() {
-        int amount = Integer.MIN_VALUE;
-        boolean result = payment.payAmount(amount);
-        assertFalse(result);
+    public void testGetTotalSaleAmount() {
+        assertEquals(totalSaleAmount, payment.getTotalSaleAmount(), "Total sale amount should match");
     }
 }

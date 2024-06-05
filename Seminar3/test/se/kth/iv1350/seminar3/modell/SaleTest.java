@@ -1,69 +1,70 @@
+package se.kth.iv1350.seminar3.modell;
+
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import se.kth.iv1350.seminar3.integration.ItemDTO;
-import se.kth.iv1350.seminar3.integration.InventoryRegistry;
-import se.kth.iv1350.seminar3.integration.InventoryRegistryCreator;
-import se.kth.iv1350.seminar3.integration.Printer;
-import se.kth.iv1350.seminar3.integration.Sale;
+import se.kth.iv1350.seminar3.dto.ItemDTO;
 
 public class SaleTest {
-    private InventoryRegistry inventoryRegistry;
+
     private Sale sale;
-    private Printer printer;
 
     @BeforeEach
     public void setUp() {
-        inventoryRegistry = InventoryRegistryCreator.getInventoryRegistry();
-        printer = new Printer();
-        sale = new Sale(inventoryRegistry, printer);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        inventoryRegistry = null;
-        sale = null;
-        printer = null;
+        sale = new Sale();
     }
 
     @Test
-    public void testAddItemToSale() {
-        ItemDTO itemDTO = new ItemDTO(1, "Test Item", 10.0, 0.25);
-        sale.addItem(itemDTO);
-        assertEquals(1, sale.getItems().size());
-        assertEquals(itemDTO, sale.getItems().get(0));
+    public void testItemAlreadyInSale() {
+        ItemDTO item = new ItemDTO("Apple", 1, 3.7, 0.12, 2);
+        sale.addItem(item, 2);
+
+        ItemDTO foundItem = sale.itemAlreadyInSale(1);
+        assertNotNull(foundItem);
+        assertEquals(item.getItemID(), foundItem.getItemID());
     }
 
     @Test
-    public void testAddMultipleItemsToSale() {
-        ItemDTO itemDTO1 = new ItemDTO(1, "Test Item 1", 10.0, 0.25);
-        ItemDTO itemDTO2 = new ItemDTO(2, "Test Item 2", 20.0, 0.12);
-        sale.addItem(itemDTO1);
-        sale.addItem(itemDTO2);
-        assertEquals(2, sale.getItems().size());
-        assertEquals(itemDTO1, sale.getItems().get(0));
-        assertEquals(itemDTO2, sale.getItems().get(1));
+    public void testAddItem() {
+        ItemDTO item = new ItemDTO("Apple", 1, 3.7, 0.12, 2);
+        sale.addItem(item, 2);
+
+        assertEquals(1, sale.getPurchasedItems().size());
+        assertEquals(item, sale.getPurchasedItems().get(0));
     }
 
     @Test
-    public void testAddNonExistentItemToSale() {
-        ItemDTO itemDTO = new ItemDTO(999, "Non-existent Item", 100.0, 0.25);
-        assertThrows(IllegalArgumentException.class, () -> sale.addItem(itemDTO));
+    public void testUpdateTotalPrice() {
+        ItemDTO item1 = new ItemDTO("Apple", 1, 3.7, 0.12, 2);
+        ItemDTO item2 = new ItemDTO("Banana", 2, 4.3, 0.12, 3);
+
+        sale.addItem(item1, 2);
+        sale.addItem(item2, 3);
+
+        double expectedTotalPrice = item1.getItemPrice() * item1.getQuantity() + item2.getItemPrice() * item2.getQuantity();
+        assertEquals(expectedTotalPrice, sale.getCurrentTotalPrice());
     }
 
     @Test
-    public void testCalculateTotalPrice() {
-        ItemDTO itemDTO1 = new ItemDTO(1, "Test Item 1", 10.0, 0.25);
-        ItemDTO itemDTO2 = new ItemDTO(2, "Test Item 2", 20.0, 0.12);
-        sale.addItem(itemDTO1);
-        sale.addItem(itemDTO2);
-        double expectedTotalPrice = 10.0 * 1.25 + 20.0 * 1.12;
-        assertEquals(expectedTotalPrice, sale.calculateTotalPrice(), 0.001);
+    public void testGetPurchasedItems() {
+        ItemDTO item1 = new ItemDTO("Apple", 1, 3.7, 0.12, 2);
+        ItemDTO item2 = new ItemDTO("Banana", 2, 4.3, 0.12, 3);
+
+        sale.addItem(item1, 2);
+        sale.addItem(item2, 3);
+
+        assertEquals(2, sale.getPurchasedItems().size());
+        assertTrue(sale.getPurchasedItems().contains(item1));
+        assertTrue(sale.getPurchasedItems().contains(item2));
     }
 
     @Test
-    public void testCalculateTotalPriceWithNoItems() {
-        assertEquals(0.0, sale.calculateTotalPrice(), 0.001);
+    public void testGetSaleID() {
+        assertTrue(sale.getSaleID() > 0);
     }
+
+    @Test
+    public void testGetCurrentTotalPrice() {
+        assertEquals(0, sale.getCurrentTotalPrice());
+    }
+}

@@ -1,72 +1,68 @@
+package se.kth.iv1350.seminar3.dto;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import se.kth.iv1350.seminar3.integration.Sale;
-import se.kth.iv1350.seminar3.dto.ItemDTO;
-import se.kth.iv1350.seminar3.dto.SaleDTO;
+import se.kth.iv1350.seminar3.modell.Sale;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class SaleDTOTest {
+    private SaleDTO saleDTO;
 
-    @Test
-    void testGetTheListOfPurchasedItems() {
+    @BeforeEach
+    public void setUp() {
+        
         Sale sale = new Sale();
-        sale.addItem(new ItemDTO(1, "Item 1", 10.0, 0.25));
-        sale.addItem(new ItemDTO(2, "Item 2", 20.0, 0.12));
-        SaleDTO saleDTO = new SaleDTO(sale);
-        List<ItemDTO> purchasedItems = saleDTO.getTheListOfPurchasedItems();
-        assertEquals(2, purchasedItems.size());
-        assertEquals("Item 1", purchasedItems.get(0).getName());
-        assertEquals("Item 2", purchasedItems.get(1).getName());
+        sale.addItem(new ItemDTO("Item 1", 1, 10.0, 0.25, 1), 1);
+        sale.addItem(new ItemDTO("Item 2", 2, 20.0, 0.25, 1), 2);
+        
+
+        
+        saleDTO = new SaleDTO(sale);
     }
 
     @Test
-    void testGetTheCurrentTotalPrice() {
-        Sale sale = new Sale();
-        sale.addItem(new ItemDTO(1, "Item 1", 10.0, 0.25));
-        sale.addItem(new ItemDTO(2, "Item 2", 20.0, 0.12));
-        SaleDTO saleDTO = new SaleDTO(sale);
+    public void testGetTheListOfPurchasedItems() {
+      
+        List<ItemDTO> purchasedItems = saleDTO.getTheListOfPurchasedItems();
+
+      
+        assertNotNull(purchasedItems, "Purchased items list should not be null");
+
+        
+        assertEquals(2, purchasedItems.size(), "Expected number of purchased items should be 2");
+
+   
+        assertEquals("Item 1", purchasedItems.get(0).getItemName(), "First item name should be 'Item 1'");
+        assertEquals("Item 2", purchasedItems.get(1).getItemName(), "Second item name should be 'Item 2'");
+    }
+
+    @Test
+    public void testGetTheCurrentTotalPrice() {
+       
+        double expectedTotalPrice = 50.0; // 10.0 * 1 + 20.0 * 2
+
+        
         double totalPrice = saleDTO.getTheCurrentTotalPrice();
-        assertEquals(33.4, totalPrice, 0.01);
+
+      
+        assertEquals(expectedTotalPrice, totalPrice, "Total price should match the expected value");
     }
 
     @Test
-    void testGetSaleDTOID() {
-        Sale sale = new Sale();
-        sale.addItem(new ItemDTO(1, "Item 1", 10.0, 0.25));
-        SaleDTO saleDTO = new SaleDTO(sale);
-        int saleId = saleDTO.getSaleDTOID();
-        assertEquals(sale.getSaleID(), saleId);
-    }
+    public void testGetSaleDTOID() {
+       
+        int expectedSaleDTOID = 1; 
 
-    @Test
-    void testUnmodifiableListOfPurchasedItems() {
-        Sale sale = new Sale();
-        sale.addItem(new ItemDTO(1, "Item 1", 10.0, 0.25));
-        SaleDTO saleDTO = new SaleDTO(sale);
-        List<ItemDTO> purchasedItems = saleDTO.getTheListOfPurchasedItems();
-        try {
-            purchasedItems.add(new ItemDTO(2, "Item 2", 20.0, 0.12));
-            fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException e) {
-            // Expected exception
-        }
-    }
+        
+        int saleDTOID = saleDTO.getSaleDTOID();
 
-    @Test
-    void testCopyItems() {
-        ArrayList<ItemDTO> originalItems = new ArrayList<>();
-        originalItems.add(new ItemDTO(1, "Item 1", 10.0, 0.25));
-        originalItems.add(new ItemDTO(2, "Item 2", 20.0, 0.12));
-        Sale sale = new Sale();
-        SaleDTO saleDTO = new SaleDTO(sale);
-        ArrayList<ItemDTO> copiedItems = saleDTO.copyItems(originalItems);
-        assertNotSame(originalItems, copiedItems);
-        assertEquals(originalItems.size(), copiedItems.size());
-        for (int i = 0; i < originalItems.size(); i++) {
-            assertEquals(originalItems.get(i).getName(), copiedItems.get(i).getName());
-        }
+      
+        assertEquals(expectedSaleDTOID, saleDTOID, "SaleDTO ID should match the expected value");
     }
 }
