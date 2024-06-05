@@ -1,14 +1,14 @@
 package se.kth.iv1350.seminar3.controller;
 
+import se.kth.iv1350.seminar3.dto.ItemDTO;
+import se.kth.iv1350.seminar3.dto.SaleDTO;
+import se.kth.iv1350.seminar3.integration.AccountingSystem;
+import se.kth.iv1350.seminar3.integration.DiscountRegister;
+import se.kth.iv1350.seminar3.integration.InventorySystem;
+import se.kth.iv1350.seminar3.integration.Printer;
 import se.kth.iv1350.seminar3.modell.Payment;
 import se.kth.iv1350.seminar3.modell.Receipt;
 import se.kth.iv1350.seminar3.modell.Sale;
-import se.kth.iv1350.seminar3.dto.SaleDTO;
-import se.kth.iv1350.seminar3.dto.ItemDTO;
-import se.kth.iv1350.seminar3.integration.InventorySystem;
-import se.kth.iv1350.seminar3.integration.AccountingSystem;
-import se.kth.iv1350.seminar3.integration.DiscountRegister;
-import se.kth.iv1350.seminar3.integration.Printer;
 
 
 
@@ -58,11 +58,13 @@ public class Controller {
      * @param quantity The quantity of the item.
      * @return The ItemDTO of the added item.
      */
-    public ItemDTO scanItem(int itemID, int quantity) { // the quantity becomes issue here 
+    public ItemDTO scanItem(int itemID, int quantity) {
         ItemDTO itemDTO = sale.itemAlreadyInSale(itemID);
-        if (itemDTO == null) {
-            itemDTO = invSys.fetchIteminfo(itemID);
+        if (itemDTO != null) {
+            sale.increaseItemQuantity(itemDTO, quantity);
+            return itemDTO;
         }
+        itemDTO = invSys.fetchIteminfo(itemID);
         sale.addItem(itemDTO, quantity);
         return itemDTO;
     }
@@ -104,8 +106,10 @@ public class Controller {
 
     public double requestDiscount(int customerId) {
         saleDTO = new SaleDTO(sale);
-        double totalPrice = sale.getCurrentTotalPrice();
-        return discountReg.fetchDiscountFromRegister(customerId, saleDTO, totalPrice);
+        
+        // discountReg.fetchDiscountFromRegister(customerId, saleDTO, currentTotalPriceBeforeDiscount);
+        double discount= sale.applyDiscount(23);
+        return discount;
     }
      /**
      * Updates external systems with the details of the current sale.

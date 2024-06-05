@@ -1,68 +1,67 @@
 package se.kth.iv1350.seminar3.view;
 
 import java.text.DecimalFormat;
-import java.util.Random;
-
 import se.kth.iv1350.seminar3.controller.Controller;
 import se.kth.iv1350.seminar3.dto.ItemDTO;
-import se.kth.iv1350.seminar3.dto.SaleDTO;
-import se.kth.iv1350.seminar3.modell.Payment;
-import se.kth.iv1350.seminar3.modell.Receipt;
-import se.kth.iv1350.seminar3.modell.Sale;
-import se.kth.iv1350.seminar3.startup.*;;
-/**
- * Simulates user/Casheir interactions.
- */
 
+/**
+ * This class is a placeholder for the user interface.
+ */
 public class View {
     private Controller contr;
-    public int quantity;
-    public double totalPrice;
-    private Sale sale;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public View(Controller contr){
-
         this.contr = contr;
     }
 
+    /**
+     * Presents an item that has been added to the sale.
+     */
+    private void presentItem(ItemDTO item, int quantity) {
+        System.out.println("Added item: " + item.getItemName() + ", quantity: " 
+                           + quantity + ", Price per unit: " + df.format(item.getItemPrice()) 
+                           + ", Total price: " + df.format(item.getItemPrice() * quantity));
+    }
 
- /**
-     * Simulates a user adding items, requesting discounts, and making a payment.
+    /**
+     * Simulates interactions with the sale system, such as adding items.
+     */
+    private void chooseItem(int itemId, int quantity) {
+        
+            ItemDTO foundItem = contr.scanItem(itemId, quantity);
+            presentItem(foundItem, quantity);    
+    }
+
+    /**
+     * Simulates a series of user actions, adding items, and completing the sale.
      */
     public void runFakeExecution() {
         System.out.println("Starting a new sale...");
-
         contr.startSale();
 
-        // Simulate adding items to the sale
-        System.out.println("Adding items to the sale...");
-        ItemDTO item1 = contr.scanItem(1, 6); // Adding 2 units of item with ID 1
-        System.out.println("Added item: " + item1.getItemName() + ", quantity: " + item1.getQuantity());
+        chooseItem(1, 2);
+        chooseItem(2,1);
+        chooseItem(3,3);
+        chooseItem(5,1);
+        chooseItem(6, 4);  
 
-        ItemDTO item2 = contr.scanItem(2, 3); // Adding 3 units of item with ID 2
-        System.out.println("Added item: " + item2.getItemName() + ", quantity: " + item2.getQuantity());
 
-        ItemDTO item3 = contr.scanItem(3); // Adding item with ID 2
-        System.out.println("Added item: " + item3.getItemName() + ", quantity: " + item3.getQuantity());
+        double totalPrice = contr.endSale();
+        System.out.println("\n\nSale ended. Total price (Inc VAT): " + df.format(totalPrice));
 
-        
-        // Simulate ending the sale
-        contr.endSale();
-        System.out.println("Sale ended. Total price: " + contr.endSale());
+        System.out.println("\nCustomer Requests Discount");
+        boolean customerRequestsDiscount = true;
+        int customerId = 1111;
+        System.out.println("Customer hands out gives his customer ID:  "+ customerId);
+        double discount = contr.requestDiscount(customerId);
+        System.out.println("Customer got this amount discount: " + 23 + "  \n");
 
-        // Simulate if customer requests discount otherwise go to pay
-        boolean customerRequestsDiscount = true; // Simulated flag for requesting a discount
-        int customerId = 1111; // Simulated customer ID
-        double discount = 0; // Simulated discount value
+        contr.pay(500, totalPrice, "Cash");
+        System.out.println("Payment of " + df.format(500) + " received. Change given: " 
+                           + df.format(500 - totalPrice));
 
-        if (customerRequestsDiscount) {
-             discount = contr.requestDiscount(customerId);
-             System.out.println("DiscountAmount " + discount);
-
-        }
-        contr.pay(200,  discount, "Cash");
-        System.out.println("Payment completed.");
-      
+        System.out.println("\nInventory system has been updated");
+        System.out.println("Accounting system has been updated");
     }
-
 }
