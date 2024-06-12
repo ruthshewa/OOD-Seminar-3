@@ -1,13 +1,30 @@
-# OOD-Seminar-3
+# OOD-Seminar-31
+Maven project generated with com.a9ski:quick-start archetype
 
 
-cd "/home/suhkth/Documents/javaOOP/OOD-Seminar-3/Seminar3/src/"
-javac se/kth/iv1350/seminar3/**/*.java
-java -cp . se.kth.iv1350.seminar3.startup.Main
+# Development guide
+1. Install pre-commit (https://pre-commit.com/)
+2. Install the pre-commit hook by executing `pre-commit install` inside project directory
+3. Run against all files in the project: `pre-commit run --all-files`
 
-sudo update-alternatives --config javac
+# Building
+```
+mvn clean install
+```
+produces a jar file with MANIFEST containing main class and classpath.
+All dependencies are copied to target/libs directory.
+
+# Runing
+```
+mvn exec:java
+```
+
+or
+
+```
+cd target
+java -jar xxxx.jar
+```
 
 
-cd /home/suhkth/Documents/javaOOP/OOD-Seminar-3/Seminar3/src/se/kth/iv1350/seminar3/
 
-java -cp /home/suhkth/Documents/javaOOP/OOD-Seminar-3/Seminar3/src se.kth.iv1350.seminar3.startup.Main
